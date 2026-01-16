@@ -1,0 +1,32 @@
+# Конфигурация приложения
+app = "your-signal-server-name"  # придумай уникальное имя!
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+
+[[services]]
+  # Внутренний порт, на котором работает приложение
+  internal_port = 12345
+  protocol = "udp"
+
+  [[services.ports]]
+    # Внешний порт, который будет открыт публично
+    port = 12345
+    handlers = []  # пустой для raw UDP!
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+# НЕОБЯЗАТЕЛЬНО: если хочешь HTTP эндпоинт для health check
+# [[services]]
+#   internal_port = 8080
+#   protocol = "tcp"
+#   
+#   [[services.ports]]
+#     port = 80
+#   
+#   [[services.ports]]
+#     port = 443
+#     handlers = ["tls", "http"]
